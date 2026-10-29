@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Free, private, client-side tool to arrange front and back ID card photos side by side on a single A4 page for accurate printing and PDF/PNG download.">
+  <title>ID Card A4 Print Maker</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- jsPDF for client-side standard A4 PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <!-- Screen Interface (Hidden when printing) -->
+  <div class="app-container no-print">
+    <header class="app-header">
+      <div class="header-content">
+        <div class="logo-group">
+          <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+            <circle cx="9" cy="10" r="2"></circle>
+            <line x1="15" y1="8" x2="17" y2="8"></line>
+            <line x1="15" y1="12" x2="17" y2="12"></line>
+            <line x1="7" y1="16" x2="17" y2="16"></line>
+          </svg>
+          <div>
+            <h1>ID Card A4 Print Maker</h1>
+            <p class="subtitle">Side-by-side A4 layout for front &amp; back ID cards</p>
+          </div>
+        </div>
+        <div class="privacy-badge" title="All processing happens locally inside your browser">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>100% Client-Side &amp; Private</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- Upload Section -->
+      <section class="section-card upload-section">
+        <h2 class="section-title">1. Upload ID Photos</h2>
+        <p class="section-hint">Upload front and back photos (JPG, PNG, WebP). Photos never leave your device.</p>
+        
+        <div class="upload-grid">
+          <!-- ID Front Card -->
+          <div class="card-upload-box" id="frontUploadBox">
+            <div class="card-upload-header">
+              <span class="badge">Front Side</span>
+              <div class="card-actions" id="frontActions" style="display: none;">
+                <button type="button" class="btn-icon" id="btnRotateLeftFront" title="Rotate 90° Left">↺</button>
+                <button type="button" class="btn-icon" id="btnRotateRightFront" title="Rotate 90° Right">↻</button>
+                <button type="button" class="btn-icon btn-danger" id="btnRemoveFront" title="Remove Image">✕</button>
+              </div>
+            </div>
+
+            <div class="drop-zone" id="frontDropZone">
+              <input type="file" id="frontInput" accept="image/jpeg,image/png,image/webp" class="file-input">
+              <div class="drop-zone-prompt" id="frontPrompt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="upload-icon">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span class="upload-btn-label">Upload ID Front</span>
+                <span class="file-types">PNG, JPG, WebP</span>
+              </div>
+              <div class="thumbnail-wrapper" id="frontThumbWrapper" style="display: none;">
+                <img id="frontThumb" alt="ID Front Preview" class="thumbnail-img">
+              </div>
+            </div>
+          </div>
+
+          <!-- ID Back Card -->
+          <div class="card-upload-box" id="backUploadBox">
+            <div class="card-upload-header">
+              <span class="badge">Back Side</span>
+              <div class="card-actions" id="backActions" style="display: none;">
+                <button type="button" class="btn-icon" id="btnRotateLeftBack" title="Rotate 90° Left">↺</button>
+                <button type="button" class="btn-icon" id="btnRotateRightBack" title="Rotate 90° Right">↻</button>
+                <button type="button" class="btn-icon btn-danger" id="btnRemoveBack" title="Remove Image">✕</button>
+              </div>
+            </div>
+
+            <div class="drop-zone" id="backDropZone">
+              <input type="file" id="backInput" accept="image/jpeg,image/png,image/webp" class="file-input">
+              <div class="drop-zone-prompt" id="backPrompt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="upload-icon">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span class="upload-btn-label">Upload ID Back</span>
+                <span class="file-types">PNG, JPG, WebP</span>
+              </div>
+              <div class="thumbnail-wrapper" id="backThumbWrapper" style="display: none;">
+                <img id="backThumb" alt="ID Back Preview" class="thumbnail-img">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Layout & Sizing Adjustments -->
+      <section class="section-card adjustments-section">
+        <h2 class="section-title">2. Layout &amp; Card Dimensions</h2>
+        
+        <div class="controls-grid">
+          <div class="control-group">
+            <div class="control-label-wrapper">
+              <label for="cardWidthSlider">Card Width (mm)</label>
+              <span class="control-value" id="cardWidthVal">85.6 mm</span>
+            </div>
+            <input type="range" id="cardWidthSlider" min="50" max="95" step="0.5" value="85.6">
+            <div class="range-marks">
+              <span>50 mm</span>
+              <span>85.6 mm (Standard ID)</span>
+              <span>95 mm</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label-wrapper">
+              <label for="cardGapSlider">Gap Between Cards (mm)</label>
+              <span class="control-value" id="cardGapVal">12.0 mm</span>
+            </div>
+            <input type="range" id="cardGapSlider" min="0" max="30" step="1" value="12">
+            <div class="range-marks">
+              <span>0 mm</span>
+              <span>12 mm (Default)</span>
+              <span>30 mm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Layout specs banner -->
+        <div class="layout-specs-bar">
+          <div class="spec-item">
+            <span class="spec-label">Page:</span>
+            <span class="spec-val">A4 (210 × 297 mm)</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Top Margin:</span>
+            <span class="spec-val">25.4 mm (1.0 in)</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Side Margins:</span>
+            <span class="spec-val" id="specSideMargin">15.0 mm</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Usable Width:</span>
+            <span class="spec-val">192.22 mm</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Actions Bar -->
+      <section class="section-card actions-section">
+        <div class="action-buttons-group">
+          <button type="button" class="btn btn-primary" id="btnDownloadPdf" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <polyline points="9 15 12 18 15 15"></polyline>
+            </svg>
+            Download PDF
+          </button>
+
+          <button type="button" class="btn btn-secondary" id="btnDownloadPng" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            Download PNG (300 DPI)
+          </button>
+
+          <button type="button" class="btn btn-secondary" id="btnPrint" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <polyline points="6 9 6 2 18 2 18 9"></polyline>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+              <rect x="6" y="14" width="12" height="8"></rect>
+            </svg>
+            Print Sheet
+          </button>
+
+          <button type="button" class="btn btn-secondary" id="btnShare" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            Share
+          </button>
+
+          <button type="button" class="btn btn-outline" id="btnReset">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            Reset All
+          </button>
+        </div>
+
+        <div id="statusMessage" class="status-message" style="display: none;"></div>
+      </section>
+
+      <!-- Live A4 Preview Section -->
+      <section class="section-card preview-section">
+        <div class="preview-header">
+          <h2 class="section-title">3. Live A4 Sheet Preview</h2>
+          <span class="preview-note">Visual scale: exact mm proportion of 210 × 297 mm</span>
+        </div>
+
+        <div class="preview-viewport-wrapper">
+          <div class="a4-preview-sheet" id="previewSheet">
+            <!-- Rulers & Margins guide (Visual indicators in app preview only) -->
+            <div class="guide-line guide-top" id="guideTop"></div>
+            <div class="guide-line guide-left" id="guideLeft"></div>
+            <div class="guide-line guide-right" id="guideRight"></div>
+
+            <!-- Front Image Element -->
+            <div class="preview-slot" id="previewFrontSlot">
+              <div class="slot-placeholder" id="placeholderFront">Upload ID Front</div>
+              <img id="previewFrontImg" alt="Front Preview" class="slot-img" style="display: none;">
+            </div>
+
+            <!-- Back Image Element -->
+            <div class="preview-slot" id="previewBackSlot">
+              <div class="slot-placeholder" id="placeholderBack">Upload ID Back</div>
+              <img id="previewBackImg" alt="Back Preview" class="slot-img" style="display: none;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Printing Tips -->
+        <div class="print-guide-card">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Printer Settings Guide
+          </h3>
+          <p>For accurate physical ID dimensions, check these settings in your printer dialog:</p>
+          <ul>
+            <li><strong>Paper Size:</strong> A4 (210 × 297 mm)</li>
+            <li><strong>Orientation:</strong> Portrait</li>
+            <li><strong>Scale:</strong> Select <strong>Actual Size</strong> or <strong>100%</strong> (do <em>not</em> use "Fit to Printable Area" or "Shrink to Fit").</li>
+            <li><strong>Margins:</strong> Set to <strong>None</strong> or <strong>Default</strong>.</li>
+          </ul>
+          <small class="hardware-note">* Note: Physical printers have unprintable mechanical edge margins (~3-5 mm). The 15 mm side margins and 25.4 mm top margin keep all card content safe from hardware clipping.</small>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>ID Card A4 Print Maker &bull; Client-side vanilla web app &bull; Zero data collected</p>
+    </footer>
+  </div>
+
+  <!-- Dedicated High-Fidelity Printable Sheet (Only visible when printing via Ctrl+P or Print Button) -->
+  <div id="printSheet" class="print-only">
+    <div id="printFrontContainer" class="print-card-box">
+      <img id="printFrontImg" alt="Front">
+    </div>
+    <div id="printBackContainer" class="print-card-box">
+      <img id="printBackImg" alt="Back">
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
