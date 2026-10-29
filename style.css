@@ -1,0 +1,616 @@
+/* ==========================================================================
+   CSS Variables & Global Reset
+   ========================================================================== */
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
+  --text-main: #1f2937;
+  --text-muted: #4b5563;
+  --border-color: #e5e7eb;
+  --card-bg: #ffffff;
+  --bg-page: #f8fafc;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --radius: 8px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-page);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   Screen App Layout
+   ========================================================================== */
+.app-container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.app-header {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.logo-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.app-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--primary);
+}
+
+h1 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.privacy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #ecfdf5;
+  color: #065f46;
+  padding: 0.35rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Section Cards
+   ========================================================================== */
+.section-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--text-main);
+}
+
+.section-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   Upload Cards & Dropzones
+   ========================================================================== */
+.upload-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .upload-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card-upload-box {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  background-color: #fafbfc;
+}
+
+.card-upload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 32px;
+  margin-bottom: 0.5rem;
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.btn-icon {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.15s ease;
+}
+
+.btn-icon:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.btn-icon.btn-danger {
+  color: var(--danger);
+}
+
+.btn-icon.btn-danger:hover {
+  background: #fef2f2;
+}
+
+.drop-zone {
+  position: relative;
+  border: 2px dashed #cbd5e1;
+  border-radius: 6px;
+  padding: 1.5rem 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  background: white;
+  transition: border-color 0.2s, background-color 0.2s;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.drop-zone.dragover {
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+}
+
+.file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.drop-zone-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.upload-icon {
+  width: 36px;
+  height: 36px;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.upload-btn-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--primary);
+}
+
+.file-types {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.thumbnail-wrapper {
+  max-width: 100%;
+  max-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.thumbnail-img {
+  max-width: 100%;
+  max-height: 140px;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  background-color: white;
+}
+
+/* ==========================================================================
+   Adjustments Controls
+   ========================================================================== */
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .controls-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.control-label-wrapper {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.control-value {
+  color: var(--primary);
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.range-marks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.layout-specs-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  background: var(--bg-page);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-size: 0.8rem;
+}
+
+.spec-item {
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.spec-label {
+  color: var(--text-muted);
+}
+
+.spec-val {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   Action Buttons
+   ========================================================================== */
+.action-buttons-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s, opacity 0.15s, transform 0.05s;
+  user-select: none;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: white;
+  border-color: var(--border-color);
+  color: var(--text-main);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border-color: #d1d5db;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.btn-outline:hover {
+  background-color: #fef2f2;
+  color: var(--danger);
+  border-color: #fca5a5;
+}
+
+.status-message {
+  margin-top: 0.85rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.status-message.info {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.status-message.error {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.status-message.success {
+  background-color: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+/* ==========================================================================
+   A4 Sheet Live Preview
+   ========================================================================== */
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.preview-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.preview-viewport-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: #64748b;
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+/* A4 Page: 210mm x 297mm (Ratio 1:1.414) */
+.a4-preview-sheet {
+  position: relative;
+  width: 100%;
+  max-width: 525px; /* Scale comfortably on desktop */
+  aspect-ratio: 210 / 297;
+  background: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Guide lines to clearly visualize the specified margins */
+.guide-line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+  border-color: rgba(37, 99, 235, 0.25);
+}
+
+.guide-top {
+  top: calc((25.4 / 297) * 100%);
+  left: 0;
+  right: 0;
+  border-top: 1px dashed;
+}
+
+.guide-left {
+  top: 0;
+  bottom: 0;
+  left: calc((15 / 210) * 100%);
+  border-left: 1px dashed;
+}
+
+.guide-right {
+  top: 0;
+  bottom: 0;
+  right: calc((15 / 210) * 100%);
+  border-right: 1px dashed;
+}
+
+.preview-slot {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: #fbfcfe;
+  border: 1px dashed #cbd5e1;
+  overflow: hidden;
+}
+
+.slot-placeholder {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  align-self: center;
+  padding: 0.5rem;
+}
+
+.slot-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  background-color: white;
+}
+
+/* Print guide tips */
+.print-guide-card {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.print-guide-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.print-guide-card ul {
+  margin-left: 1.5rem;
+  margin-top: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.print-guide-card li {
+  margin-bottom: 0.2rem;
+}
+
+.hardware-note {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.app-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 1rem 0 2rem;
+}
+
+/* ==========================================================================
+   Print-Specific Styles (Standard A4 Output)
+   ========================================================================== */
+.print-only {
+  display: none;
+}
+
+@page {
+  size: A4 portrait;
+  margin: 0; /* Let our layout manage the exact mm margins */
+}
+
+@media print {
+  /* Completely hide standard web UI elements */
+  body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+    position: relative !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    background-color: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-card-box {
+    position: absolute;
+    background-color: #ffffff;
+    overflow: hidden;
+  }
+
+  .print-card-box img {
+    width: 100%;
+    height: auto;
+    display: block;
+    background-color: #ffffff;
+  }
+}
